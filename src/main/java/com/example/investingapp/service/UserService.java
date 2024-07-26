@@ -77,7 +77,7 @@ public class UserService {
             }
 
             if (updateUserDto.email() != null) {
-                user.setPassword(updateUserDto.email());
+                user.setEmail(updateUserDto.email());
             }
 
             userRepository.save(user);
