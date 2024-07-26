@@ -8,5 +8,3 @@
 * Brapi.dev
 * JUnit
 * Mockito
-
-:mag: Baixe o projeto e teste você mesmo na prática.
