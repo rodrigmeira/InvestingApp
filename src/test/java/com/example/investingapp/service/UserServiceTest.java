@@ -245,7 +245,7 @@ class UserServiceTest {
             var userCaptured = userArgumentCaptor.getValue();
 
             assertEquals(updateUserDto.username(), userCaptured.getUsername());
-            assertEquals(updateUserDto.password(), userCaptured.getPassword());
+            assertEquals(updateUserDto.email(), userCaptured.getEmail());
 
 
             verify(userRepository, times(1))
@@ -260,7 +260,7 @@ class UserServiceTest {
 
             var updateUserDto = new UpdateUserDto(
                     "newUsername",
-                    "newPassword"
+                    "newEmail"
             );
             var userId = UUID.randomUUID();
             doReturn(Optional.empty())

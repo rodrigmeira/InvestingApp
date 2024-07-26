@@ -20,11 +20,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class UserService {
 
     private UserRepository userRepository;
-
     private AccountRepository accountRepository;
     private BillingAddressRepository billingAddressRepository;
 
@@ -38,6 +39,7 @@ public class UserService {
 
     public UUID createUser(CreateUserDto createUserDto) {
 
+        // DTO -> ENTITY
         var entity = new User(
                 UUID.randomUUID(),
                 createUserDto.username(),
@@ -46,13 +48,13 @@ public class UserService {
                 Instant.now(),
                 null);
 
-
         var userSaved = userRepository.save(entity);
 
         return userSaved.getUserId();
     }
 
     public Optional<User> getUserById(String userId) {
+
         return userRepository.findById(UUID.fromString(userId));
     }
 
@@ -60,7 +62,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateUserById(String userId, UpdateUserDto updateUserDto) {
+    public void updateUserById(String userId,
+                               UpdateUserDto updateUserDto) {
+
         var id = UUID.fromString(userId);
 
         var userEntity = userRepository.findById(id);
@@ -72,15 +76,17 @@ public class UserService {
                 user.setUsername(updateUserDto.username());
             }
 
-            if (updateUserDto.password() != null) {
-                user.setPassword(updateUserDto.password());
+            if (updateUserDto.email() != null) {
+                user.setPassword(updateUserDto.email());
             }
 
             userRepository.save(user);
         }
+
     }
 
     public void deleteById(String userId) {
+
         var id = UUID.fromString(userId);
 
         var userExists = userRepository.existsById(id);
@@ -95,6 +101,7 @@ public class UserService {
         var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        // DTO -> ENTITY
         var account = new Account(
                 UUID.randomUUID(),
                 user,
@@ -106,7 +113,7 @@ public class UserService {
         var accountCreated = accountRepository.save(account);
 
         var billingAddress = new BillingAddress(
-            accountCreated.getAccountId(),
+                accountCreated.getAccountId(),
                 account,
                 createAccountDto.street(),
                 createAccountDto.number()
@@ -115,7 +122,7 @@ public class UserService {
         billingAddressRepository.save(billingAddress);
     }
 
-    public List<AccountResponseDto> litsAccounts(String userId) {
+    public List<AccountResponseDto> listAccounts(String userId) {
         var user = userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -126,3 +133,4 @@ public class UserService {
                 .toList();
     }
 }
+

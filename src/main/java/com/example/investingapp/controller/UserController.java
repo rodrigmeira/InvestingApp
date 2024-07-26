@@ -48,7 +48,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId, @RequestBody UpdateUserDto updateUserDto) {
+    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId,
+                                               @RequestBody UpdateUserDto updateUserDto) {
         userService.updateUserById(userId, updateUserDto);
         return ResponseEntity.noContent().build();
     }
@@ -62,14 +63,16 @@ public class UserController {
     @PostMapping("/{userId}/accounts")
     public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId,
                                            @RequestBody CreateAccountDto createAccountDto) {
+
         userService.createAccount(userId, createAccountDto);
+
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{userId}/accounts")
     public ResponseEntity<List<AccountResponseDto>> listAccounts(@PathVariable("userId") String userId) {
 
-        var accounts = userService.litsAccounts(userId);
+        var accounts = userService.listAccounts(userId);
 
         return ResponseEntity.ok(accounts);
     }

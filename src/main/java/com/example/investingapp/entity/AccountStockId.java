@@ -18,9 +18,9 @@ public class AccountStockId {
     public AccountStockId() {
     }
 
-    public AccountStockId(UUID accountId, String stokcId) {
+    public AccountStockId(UUID accountId, String stockId) {
         this.accountId = accountId;
-        this.stockId = stokcId;
+        this.stockId = stockId;
     }
 
     public UUID getAccountId() {
@@ -31,11 +31,11 @@ public class AccountStockId {
         this.accountId = accountId;
     }
 
-    public String getStokcId() {
+    public String getStockId() {
         return stockId;
     }
 
-    public void setStokcId(String stokcId) {
-        this.stockId = stokcId;
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
     }
 }

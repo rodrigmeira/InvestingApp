@@ -42,14 +42,6 @@ public class BillingAddress {
         this.id = id;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
     public String getStreet() {
         return street;
     }

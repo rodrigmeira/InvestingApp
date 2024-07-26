@@ -23,14 +23,15 @@ public class AccountService {
 
     @Value("#{environment.TOKEN}")
     private String TOKEN;
-
     private AccountRepository accountRepository;
     private StockRepository stockRepository;
     private AccountStockRepository accountStockRepository;
     private BrapiClient brapiClient;
 
     public AccountService(AccountRepository accountRepository,
-                          StockRepository stockRepository, AccountStockRepository accountStockRepository, BrapiClient brapiClient) {
+                          StockRepository stockRepository,
+                          AccountStockRepository accountStockRepository,
+                          BrapiClient brapiClient) {
         this.accountRepository = accountRepository;
         this.stockRepository = stockRepository;
         this.accountStockRepository = accountStockRepository;
@@ -45,7 +46,7 @@ public class AccountService {
         var stock = stockRepository.findById(dto.stockId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-
+        // DTO -> ENTITY
         var id = new AccountStockId(account.getAccountId(), stock.getStockId());
         var entity = new AccountStock(
                 id,
@@ -55,6 +56,7 @@ public class AccountService {
         );
 
         accountStockRepository.save(entity);
+
     }
 
     public List<AccountStockResponseDto> listStocks(String accountId) {
@@ -64,17 +66,16 @@ public class AccountService {
 
         return account.getAccountStocks()
                 .stream()
-                .map(as -> new AccountStockResponseDto(
-                        as.getStock().getStockId(),
-                        as.getQuantity(),
-                        getTotal(as.getQuantity(), as.getStock().getStockId())
-                ))
+                .map(as ->
+                        new AccountStockResponseDto(
+                                as.getStock().getStockId(),
+                                as.getQuantity(),
+                                getTotal(as.getQuantity(), as.getStock().getStockId())
+                        ))
                 .toList();
-
     }
 
     private double getTotal(Integer quantity, String stockId) {
-
 
         var response = brapiClient.getQuote(TOKEN, stockId);
 
